@@ -19,18 +19,32 @@ the temporary working directory is removed when the program closes.
 
 ## User workflow
 
+Keep `SessionChatExporter.exe` in Downloads. On the first run:
+
 1. Fully quit Session from the Windows system-tray icon.
 2. Open `SessionChatExporter.exe`.
-3. Click **Load conversations**.
-4. Select one conversation.
-5. Click **Export selected conversation** and choose a destination folder.
-6. The finished local HTML archive opens in the default browser.
+3. Click **1. Find my Session chats**. The activity log explains each database-copy,
+   decryption, and validation step.
+4. Search the conversation list by name, ID, or recent-message preview and select the
+   intended chat.
+5. Click **3. Export / update selected chat**.
+6. The app creates `Downloads\session-export\index.html`, saves decrypted attachments
+   under `Downloads\session-export\attachments`, and opens the HTML in the browser.
+
+On later runs, fully quit Session and click **Next time: update my saved chat now**.
+The app takes a fresh snapshot and merges only material it has not archived before.
+It does not create timestamped folders. Message IDs provide deduplication, so the merge
+also works when a 12-hour disappearing-message window has no overlap with the previous
+capture. Earlier captures remain in the accumulating HTML conversation.
+
+If anything fails, click **Copy log to clipboard** and send the pasted log for
+troubleshooting. The database key is never included in the log.
 
 The exporter never writes to Session's live profile. It copies only the encrypted
 database into a private Windows temporary directory, decrypts a temporary copy,
 reads selected attachment blobs from `attachments.noindex`, and removes the
-temporary databases on exit. The HTML export and decrypted attachments remain in
-the destination chosen by the user and must be kept private.
+temporary databases after the operation. The HTML, decrypted attachments, and the
+incremental `archive.json` index remain in `session-export` and must be kept private.
 
 ## Run from source on Windows
 
